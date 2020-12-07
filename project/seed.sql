@@ -7,3 +7,6 @@ select * from written_by W join authors A on W.author=A.id where W.isbn = '97814
 
 streamlit run project.py --server.address=localhost --server.port=8514
 select * from album_tracks AT join albums A on AT.id=A.id
+
+
+9781324005032

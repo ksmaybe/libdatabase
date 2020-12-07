@@ -102,5 +102,49 @@ if album_name:
 
     for track_name in track_names:
         st.write(f"{track_name}")
-    st.write(f"There are currently {a_stock} DVDs available.")
+    st.write(f"There are currently {a_stock} CDs available.")
+
+'## Query Patrons'
+
+sql_patron_names = 'select name from patrons;'
+patron_names = query_db(sql_patron_names)['name'].tolist()
+patron_name = st.selectbox('What is your name?', patron_names)
+if patron_name:
+    sql_patron = f"select * from patrons where name='{patron_name}';"
+    patron_id = query_db(sql_patron).loc[0]['id']
+
+    'Books Checked'
+    sql_book = f"select * from book_check C join books B on B.isbn=C.isbn where C.id = {patron_id};"
+    book_info = query_db(sql_book)
+    sql_book_num = f"select count(*) num from book_check C join books B on B.isbn=C.isbn where C.id = {patron_id} group by C.id;"
+    book_count = query_db(sql_book_num).loc[0]['num']
+    book_names=book_info['name'].tolist()
+    book_dates=book_info['date'].tolist()
+    st.write(f"{patron_name} has checked {book_count} books:    ")
+    for i in range(len(book_names)):
+        st.write(f"{book_names[i]} on {book_dates[i]}")
+
+    'Movies Checked'
+
+    sql_movie = f"select * from movie_check C join movies M on M.id=C.mid where C.pid = {patron_id};"
+    movie_info=query_db(sql_movie)
+    sql_movie_num = f"select count(*) num from movie_check C join movies M on M.id=C.mid where C.pid = {patron_id} group by C.pid;"
+    movie_count = query_db(sql_movie_num).loc[0]['num']
+    movie_names=movie_info['name'].tolist()
+    movie_dates=movie_info['date'].tolist()
+    st.write(f"{patron_name} has checked {movie_count} movies:    ")
+    for i in range(len(movie_names)):
+        st.write(f"{movie_names[i]} on {movie_dates[i]}")
+
+    'Albums Checked'
+
+    sql_album = f"select * from album_check C join albums A on A.id=C.aid where C.pid = {patron_id};"
+    album_info=query_db(sql_album)
+    sql_album_num = f"select count(*) num from album_check C join albums A on A.id=C.aid where C.pid = {patron_id} group by C.pid;"
+    album_count = query_db(sql_album_num).loc[0]['num']
+    album_names=album_info['name'].tolist()
+    album_dates=album_info['date'].tolist()
+    st.write(f"{patron_name} has checked {album_count} albums:    ")
+    for i in range(len(album_names)):
+        st.write(f"{album_names[i]} on {album_dates[i]}")
 
