@@ -148,3 +148,21 @@ if patron_name:
     for i in range(len(album_names)):
         st.write(f"{album_names[i]} on {album_dates[i]}")
 
+'## Query Actors'
+
+sql_actor_names = 'select name from actors;'
+actor_names = query_db(sql_actor_names)['name'].tolist()
+actor_name = st.selectbox('Choose an actor/actress', actor_names)
+if actor_name:
+    sql_actor = f"select * from actors where name='{actor_name}';"
+    actor_info = query_db(sql_actor).loc[0]
+    sql_acted = f"select * from starred_by S join movies M on S.mid=M.id where S.aid = '{actor_info['id']}';"
+    acted_info = query_db(sql_acted)
+    acted_names=acted_info['name'].tolist()
+    acted_years=acted_info['year'].tolist()
+    sql_acted_num = f"select count(*) num from starred_by S join movies M on S.mid=M.id where S.aid = '{actor_info['id']}' group by S.aid;"
+    acted_num=query_db(sql_acted_num).loc[0]['num']
+    st.write(f"{actor_name} acted in {acted_num} movies:")
+    for i in range(len(acted_names)):
+        st.write(f"{acted_names[i]} in {acted_years[i]}")
+
