@@ -6,6 +6,7 @@ from configparser import ConfigParser
 # Welcome to Shang Ke & Tengri Zhang's DB Project 
 We will showcase some database functions here.
 '''
+st.markdown("![Alt Text](https://media.giphy.com/media/XD9o33QG9BoMis7iM4/giphy.gif)")
 
 @st.cache
 def get_config(filename='database.ini', section='postgresql'):
@@ -42,7 +43,7 @@ if table_name:
     sql_table = f'select * from {table_name};'
     df = query_db(sql_table)
     st.dataframe(df)
-
+st.markdown("![Alt Text](https://media.giphy.com/media/vzO0Vc8b2VBLi/giphy.gif)")
 '## Query Books'
 
 sql_book_names = 'select name from books;'
