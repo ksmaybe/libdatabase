@@ -6,4 +6,4 @@ with recursive descendant(parent,child) as (
         where D.child=P.parent)
 select parent ancestor,child descendant from descendant D,person P1,person P2
 where D.parent=P1.name and D.child=P2.name and P1.gender=P2.gender
-order by parent,child;
+order by ancestor,descendant;

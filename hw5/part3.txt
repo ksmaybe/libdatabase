@@ -1,0 +1,95 @@
+
+addblock '
+person[name] = gender -> string(name),string(gender).
+'
+
+
+exec '
++person("Lainey Day","F").
++person("Diya Burt", "F").
++person("Soren Suarez","M").
++person("Becky Bowden","F").
++person("Leonard Lee","M").
++person("Derek Mccarty","M").
++person("Rikki Carter","F").
++person("Reagan Goff","M").
++person("Reon Medina","F").
++person("Ellice Liu","F").
++person("Zakk Duncan","M").
++person("Kieran Clay","F").
++person("Karla Kennedy","F").
++person("Melissa Ruiz","F").
++person("Robson Wolfe","M").
++person("Ada Abbott","F").
++person("Athena Cooper","F").
++person("Dana Bradshaw","F").
++person("Reilly Muir","M").
++person("Rui Davie","F").
+'
+
+print person
+
+addblock '
+parentof(parent,child) -> string(parent),string(child).
+parentof(parent,child) -> person(parent,_),person(child,_).
+'
+
+exec '
++parentof("Soren Suarez","Lainey Day").
++parentof("Diya Burt","Ellice Liu").
++parentof("Diya Burt","Rikki Carter").
++parentof("Lainey Day","Reagan Goff").
++parentof("Reilly Muir","Robson Wolfe").
++parentof("Zakk Duncan","Kieran Clay").
++parentof("Kieran Clay","Karla Kennedy").
++parentof("Melissa Ruiz","Ada Abbott").
++parentof("Ada Abbott","Zakk Duncan").
++parentof("Ada Abbott","Athena Cooper").
++parentof("Athena Cooper","Dana Bradshaw").
+'
+
+addblock '
+siblings(x,y) -> string(x),string(y).
+siblings(x,y) <- parentof(z,x),parentof(z,y),x!=y.
+'
+
+print siblings
+
+addblock '
+ancestor(x,y) -> string(x),string(y).
+ancestor(x,y) <- parentof(x,y).
+ancestor(x,y) <- parentof(x,z),ancestor(z,y).
+'
+
+print ancestor
+
+addblock '
+related(x,y) -> string(x),string(y).
+related(x,y) <- siblings(x,y).
+related(x,y) <- ancestor(x,y).
+related(x,y) <- ancestor(y,x).
+'
+
+print related
+
+addblock '
+same_generation(x,y,g) -> string(x),string(y),int(g).
+same_generation(x,y,g) <- parentof(z,x),parentof(z,y),x!=y,g=1.
+same_generation(x,y,g) <- same_generation(a,b,c),parentof(a,x),parentof(b,y),x!=y,g=c+1.
+same_generation(x,y,g) <- same_generation(a,_,c),parentof(a,x),parentof(a,y),x!=y,g=c+1.
+same_generation(x,y,g) <- same_generation(_,b,c),parentof(b,x),parentof(b,y),x!=y,g=c+1.
+'
+
+print same_generation
+
+addblock '
+ancestorg(x,y,g) -> string(x),string(y),string(g).
+ancestorg(x,y,g) <- parentof(x,y),person(y,g).
+ancestorg(x,y,g) <- parentof(x,z),ancestor(z,y),person(y,g).
+'
+
+addblock '
+num_descendants_by_gender[x,g] = n <- agg<<n =count()>> ancestorg(x,_,g).
+'
+
+print num_descendants_by_gender

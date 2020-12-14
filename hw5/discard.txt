@@ -1,0 +1,25 @@
+person[name] = gender -> string(name), string(gender).
+
+
+exec '
++person["Lainey Day"] = "F".
++person["Diya Burt"] = "F".
++person["Soren Suarez"] = "M".
++person["Becky Bowden"] = "F".
++person["Leonard Lee"] = "M".
++person["Derek Mccarty"] = "M".
++person["Rikki Carter"] = "F".
++person["Reagan Goff"] = "M".
++person["Reon Medina"] = "F".
++person["Ellice Liu"] = "F".
++person["Zakk Duncan"] = "M".
++person["Kieran Clay"] = "F".
++person["Karla Kennedy"] = "F".
++person["Melissa Ruiz"] = "F".
++person["Robson Wolfe"] = "M".
++person["Ada Abbott"] = "F".
++person["Athena Cooper"] = "F".
++person["Dana Bradshaw"] = "F".
++person["Reilly Muir"] = "M".
++person["Rui Davie"] = "F".
+'
